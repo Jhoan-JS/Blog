@@ -100,9 +100,9 @@ UserSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
+  console.log('Token from model', hashToken);
   this.passwordResetToken = hashToken;
-  this.passwordResetExpires = Date.now() + 10 + 60 * 100;
+  this.passwordResetExpires = Date.now() + 10 + 60 * 1000;
 
   return resetToken;
 };
