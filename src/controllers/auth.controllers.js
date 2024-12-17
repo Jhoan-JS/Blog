@@ -6,6 +6,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const Comment = require('../models/Comment.model');
 const sendEmail = require('../utils/Email');
+const bcrypt = require('bcryptjs');
+const Post = require('../models/Post.model');
 // eslint-disable-next-line arrow-body-style
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -13,17 +15,48 @@ const signToken = (id) => {
   });
 };
 
+exports.getSignup= catchAsync(async (req, res, next) => {
+  /*const posts = await Post.find();*/
+  console.log("vete");
+  res.status(200).render('pages/signup');
+ });
+ 
+ exports.getLogin= catchAsync(async (req, res, next) => {
+  /*const posts = await Post.find();*/
+  console.log("vete");
+  res.status(200).render('pages/auth/login');
+ });
+ 
+
 exports.signup = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm, role } = req.body;
 
-  const newUser = await User.create({
-    name,
-    email,
-    password,
-    passwordConfirm,
-    role,
-  });
+  const { name,lastname, email, password, Confirmpassword } = req.body;
+  console.log(name);
+  console.log(lastname);
+  console.log(email);
+  
 
+    
+    const newUser = new User({
+      name,lastname,
+      email,
+      password
+    });
+  
+    
+    /*const newUser = await User.create({
+      name,lastname,
+      email,
+      password,
+      Confirmpassword,
+    });*/
+    await newUser.save();
+    console.log(newUser);
+
+  
+  
+ 
+/*
   const token = signToken(newUser._id);
   res.status(201).json({
     status: 'success',
@@ -31,27 +64,44 @@ exports.signup = catchAsync(async (req, res, next) => {
     data: {
       user: newUser,
     },
-  });
+  });*/
+  res.status(200).render('pages/home',{name});
+  /*res.render('success', { name }); // Renderiza una página de éxito*/
 });
 
 exports.login = catchAsync(async (req, res, next) => {
+  console.log( req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
     return next(new AppError('Please provide email and password', 400));
   }
-
+ 
   const user = await User.findOne({ email }).select('+password');
-
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  console.log( user.password);
+  /*if (!user || !(await user.correctPassword(password, user.password))) {
+  
     return next(new AppError('Incorrect email or password', 401));
-  }
+    console.log( req.body);
+  }*/
 
+    if (!user || !(user.password===password)) {
+  
+      return next(new AppError('Incorrect email or password', 401));
+      console.log( req.body);
+    }
+    console.log( "req.body");
+    global.user = user;
   const token = signToken(user._id);
-  res.status(201).json({
+  const name = user.name;
+  console.log(user._id);
+  const posts = await Post.find({author:user._id});
+  console.log(posts);
+  res.status(200).render('pages/home',{name,posts});
+  /*res.status(201).json({
     status: 'success',
     token,
-  });
+  });*/
 });
 
 exports.protect = catchAsync(async (req, res, next) => {

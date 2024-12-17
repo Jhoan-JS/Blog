@@ -6,13 +6,16 @@ const AppError = require('../utils/AppError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getHome = catchAsync(async (req, res, next) => {
+  console.log(user);
   const posts = await Post.find();
+  
 
   res.status(200).render('pages/home', {
     title: 'All Posts',
     posts,
   });
 });
+
 
 exports.getPost = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({ slug: req.params.slug })

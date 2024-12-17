@@ -21,7 +21,8 @@ exports.getPosts = catchAsync(async (req, res, next) => {
 });
 
 exports.getPost = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+  const { id } = req.body;
+  console.log(req.body);
   const post = await Post.findById(id);
 
   if (!post) {
@@ -35,17 +36,32 @@ exports.getPost = catchAsync(async (req, res, next) => {
 });
 
 exports.createPost = catchAsync(async (req, res, next) => {
-  const createdPost = await Post.create(req.body);
+  console.log("dasdas");
+  console.log(req.body);
+  console.log(req.params);
 
+  const {feeling,descr} =req.body;
+ const author = user._id;
+ console.log(author);
+ const createdPost = new Post({feeling,descr,author});
+  await createdPost.save(function (err) {
+  console.log(err);
+});
+
+
+res.redirect("http://localhost/user/submitLogin") 
+ // res.redirect("http://localhost/home");
+/*
   res.status(201).json({
     status: 'success',
 
     data: { post: createdPost },
-  });
+  });*/
 });
 
 exports.updatePost = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+  const { id } = req.body;
+  console.log(req.body)
   const updatedPost = await Post.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
@@ -62,7 +78,9 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 });
 
 exports.deletePost = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+  const { id } = req.body;
+  console.log(req.body);
+
   const deletedPost = await Post.findByIdAndDelete(id);
 
   if (!deletedPost) {

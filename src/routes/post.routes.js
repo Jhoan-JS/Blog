@@ -3,12 +3,22 @@ const postController = require('../controllers/post.controllers');
 const commentController = require('../controllers/comment.controllers');
 const authController = require('../controllers/auth.controllers');
 
-Router.route('/').get(postController.getPosts).post(postController.createPost);
+Router.route('/').get(postController.getPosts)
 
-Router.route('/:id')
+Router.route('/').post(postController.createPost);
+/*Router.route('/:id')
   .get(postController.getPost)
   .patch(authController.protect, postController.updatePost)
   .delete(authController.protect, postController.deletePost);
+*/
+
+
+Router.route('/delete').post( postController.deletePost)
+  .delete(postController.deletePost);
+
+  Router.route('/update').post( postController.updatePost)
+
+  
 
 //comments
 Router.route('/:id/comments')

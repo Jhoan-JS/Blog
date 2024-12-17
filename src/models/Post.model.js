@@ -2,45 +2,44 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 
 const PostSchema = mongoose.Schema({
-  title: {
+  feeling: {
     type: String,
     trim: true,
-    unique: true,
     required: [true, 'A post must have a title.'],
   },
-  slug: String,
+/*  slug: String,*/
   createAt: {
     type: Date,
     default: Date.now(),
   },
 
-  summary: {
+  /*summary: {
     type: String,
     trim: true,
     required: [true, 'A post must have a summary'],
-  },
+  },*/
 
-  description: {
+  descr: {
     type: String,
     trim: true,
     required: [true, 'A post must have a description'],
   },
-
+/*
   imageCover: {
     type: String,
     required: [true, 'A post must have a cover image '],
-  },
-
+  },*/
+/*
   active: {
     type: Boolean,
     default: true,
-  },
+  },*/
 
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Author',
   },
-
+/*
   categories: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -53,19 +52,29 @@ const PostSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment',
     },
-  ],
+  ],*/
 });
-
+/*
 PostSchema.pre('save', function (next) {
   this.slug = slugify(this.title, { lower: true });
 
   next();
-});
+});*/
 
 //change date format
 // PostSchema.post('find', function (next) {
 //   next();
 // });
+/*
+PostSchema.methods.changeDateFormat = (date) => {
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return date.toLocaleDateString('en-US', options);
+};*/
 
 PostSchema.methods.changeDateFormat = (date) => {
   const options = {

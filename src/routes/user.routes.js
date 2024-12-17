@@ -10,13 +10,19 @@ const {
 
 const authController = require('../controllers/auth.controllers');
 
-Router.route('/signup').post(authController.signup);
+Router.route('/signup').get(authController.getSignup);
+
+Router.route('/submit').post(authController.signup);
+
+
 
 Router.route('/forgotPassword').post(authController.forgotPassword);
 
 Router.route('/resetPassword/:resetToken').patch(authController.resetPassword);
 
-Router.route('/login').post(authController.login);
+
+Router.route('/login').get(authController.getLogin);
+Router.route('/submitLogin').post(authController.login);
 
 Router.route('/').get(authController.protect, getAllUsers).post(createUser);
 
