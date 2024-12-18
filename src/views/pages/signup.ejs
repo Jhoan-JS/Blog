@@ -33,6 +33,14 @@
                      <div class="logo-detail">            
                            <div class="d-flex align-items-center"><img src="../assets/images/logo.png" class="img-fluid rounded-normal light-logo logo" alt="logo"> <h4 class="logo-title ml-3">MindfulNotes</h4></div>
                      </div>  
+
+                      <!-- Mostrar mensaje de error si está disponible -->
+ <% if (errorMessage !="") { %>
+   <div style="color: red; padding: 10px; border: 1px solid red; margin-bottom: 20px;">
+       <%= errorMessage %>
+   </div>
+<% } %>
+
                      <h3 class="mb-2">Regístrese</h3>
                      <p>Crea tu cuenta.</p>
                      <form action="/user/submit" method="POST">
@@ -57,7 +65,7 @@
                            </div>
                            <div class="col-lg-6">
                               <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="passwords" placeholder=" " id="password" name="password">
+                                 <input class="floating-input form-control" type="password" placeholder=" " id="password" name="password">
                                  <label>Password</label>
                               </div>
                            </div>

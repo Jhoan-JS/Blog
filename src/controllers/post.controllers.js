@@ -40,23 +40,28 @@ exports.createPost = catchAsync(async (req, res, next) => {
   console.log(req.body);
   console.log(req.params);
 
-  const {feeling,descr} =req.body;
- const author = user._id;
- console.log(author);
- const createdPost = new Post({feeling,descr,author});
+  const { feeling, descr } = req.body;
+  const author = user._id;
+  console.log(author);
+  const createdPost = new Post({ feeling, descr, author });
   await createdPost.save(function (err) {
-  console.log(err);
-});
+    console.log(err);
+  });
+
+  const name = user.name;
+  console.log("dasdsa");
+  const posts = await Post.find({ author: user._id });
+  console.log(posts);
+  res.render('pages/home', { name, posts });
 
 
-res.redirect("http://localhost/user/submitLogin") 
- // res.redirect("http://localhost/home");
-/*
-  res.status(201).json({
-    status: 'success',
-
-    data: { post: createdPost },
-  });*/
+  // res.redirect("http://localhost/home");
+  /*
+    res.status(201).json({
+      status: 'success',
+  
+      data: { post: createdPost },
+    });*/
 });
 
 exports.updatePost = catchAsync(async (req, res, next) => {

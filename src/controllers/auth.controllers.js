@@ -18,19 +18,59 @@ const signToken = (id) => {
 exports.getSignup= catchAsync(async (req, res, next) => {
   /*const posts = await Post.find();*/
   console.log("vete");
-  res.status(200).render('pages/signup');
+  res.status(200).render('pages/signup',{ errorMessage: "" });
  });
+
+ exports.getUserEdit = catchAsync(async (req, res, next) => {
+  /*const posts = await Post.find();*/
+  
+  res.status(200).render('pages/user/user-profile-edit',{user,success:"",anchor:"#personal-information"});
+ });
+
+
  
  exports.getLogin= catchAsync(async (req, res, next) => {
   /*const posts = await Post.find();*/
-  console.log("vete");
-  res.status(200).render('pages/auth/login');
+ 
+  res.status(200).render('pages/auth/login', { errorMessage:"" });
  });
  
 
 exports.signup = catchAsync(async (req, res, next) => {
 
-  const { name,lastname, email, password, Confirmpassword } = req.body;
+  const { name, lastname, email, password, Confirmpassword } = req.body;
+console.log(req.body);
+
+ // Validación de datos de entrada
+ if (!name || !lastname || !email || !password || !Confirmpassword) {
+ 
+  console.log("dsada");
+  return res.render('pages/signup', { errorMessage: 'Todos los campos son obligatorios.' });
+}
+
+// Validación de contraseñas
+if (password !== Confirmpassword) {
+
+  return res.render('pages/signup', { errorMessage: 'Las contraseñas no coinciden.' });
+}
+
+// Validación de formato de correo electrónico
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(email)) {
+ 
+
+  return res.render('pages/signup', { errorMessage: 'Correo electrónico no válido.' });
+}
+
+// Verificación si el correo electrónico ya está registrado
+const userExists = await User.findOne({ email });
+if (userExists) {
+  return res.render('pages/signup', { errorMessage: 'Este correo electrónico ya está registrado.' });
+ 
+}
+
+
+ 
   console.log(name);
   console.log(lastname);
   console.log(email);
@@ -65,7 +105,9 @@ exports.signup = catchAsync(async (req, res, next) => {
       user: newUser,
     },
   });*/
-  res.status(200).render('pages/home',{name});
+ 
+
+   res.render('pages/auth/login', { errorMessage: '' });
   /*res.render('success', { name }); // Renderiza una página de éxito*/
 });
 
@@ -74,8 +116,20 @@ exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AppError('Please provide email and password', 400));
+
+    return res.render('pages/auth/login', { errorMessage: 'Digite un email y la contraseña' });
   }
+
+  if ( !password) {
+
+    return res.render('pages/auth/login', { errorMessage: 'Digite  la contraseña' });
+  }
+
+  if ( !email ) {
+
+    return res.render('pages/auth/login', { errorMessage: 'Digite el email' });
+  }
+ 
  
   const user = await User.findOne({ email }).select('+password');
   console.log( user.password);
@@ -86,9 +140,9 @@ exports.login = catchAsync(async (req, res, next) => {
   }*/
 
     if (!user || !(user.password===password)) {
-  
-      return next(new AppError('Incorrect email or password', 401));
-      console.log( req.body);
+      return res.render('pages/auth/login', { errorMessage: 'Email o contraseña incorrecta' });
+     
+      ;
     }
     console.log( "req.body");
     global.user = user;

@@ -14,7 +14,9 @@ Router.route('/signup').get(authController.getSignup);
 
 Router.route('/submit').post(authController.signup);
 
+Router.route('/edit').get(authController.getUserEdit);
 
+Router.route('/edit').post(updateUser);
 
 Router.route('/forgotPassword').post(authController.forgotPassword);
 

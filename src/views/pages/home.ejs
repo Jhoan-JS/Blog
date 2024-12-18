@@ -517,7 +517,7 @@
                                       <i class="lar la-user-circle font-size-20 mr-1"></i>
                                       <span class="mt-2">Mi Perfil</span>
                                   </a>
-                                  <a class="dropdown-item mb-2" href="../app/user-profile-edit.html">
+                                  <a class="dropdown-item mb-2" href="/user/edit">
                                       <i class="las la-user-edit font-size-20 mr-1"></i>
                                       <span>Editar Perfil</span>
                                   </a>
@@ -544,7 +544,7 @@
       </div>      
       <div class="iq-sidebar  sidebar-default ">
           <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-              <a href="../backend/index.html" class="header-logo">
+              <a href="/posts" class="header-logo">
                 <img src="../assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"> <h4 class="logo-title ml-3">MindfulNotes </h4>
               </a>
               <div class="iq-menu-bt-sidebar">
@@ -560,22 +560,12 @@
                   <i class="las la-angle-down"></i>
               </a>
               <div class="dropdown-menu w-100 border-0 my-2" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item mb-2" href="../app/user-profile.html">
-                      <i class="lar la-user-circle font-size-20 mr-1"></i>
-                      <span class="mt-2">Mi Perfil</span>
-                  </a>
-                  <a class="dropdown-item mb-2" href="../app/user-profile-edit.html">
+                
+                  <a class="dropdown-item mb-2" href="/user/edit">
                       <i class="las la-user-edit font-size-20 mr-1"></i>
                       <span>Editar Perfil</span>
                   </a>
-                  <a class="dropdown-item mb-2" href="../app/user-account-setting.html">
-                      <i class="las la-user-cog font-size-20 mr-1"></i>
-                      <span>Configuración</span>
-                  </a>
-                  <a class="dropdown-item mb-3" href="../app/user-privacy-setting.html">
-                      <i class="las la-user-shield font-size-20 mr-1"></i>
-                      <span>Ajustes de privacidad</span>
-                  </a>
+                
                   <hr class="my-2">
                   <a class="dropdown-item" href="../backend/auth-sign-in.html">
                       <i class="las la-sign-out-alt font-size-20 mr-1"></i>
@@ -593,7 +583,7 @@
               <nav class="iq-sidebar-menu">
                   <ul id="iq-sidebar-toggle" class="iq-menu">
                       <li class="active">
-                              <a href="../backend/index.html" class="svg-icon">
+                              <a href="/posts" class="svg-icon">
                                   <i>
                                       <svg class="svg-icon" id="iq-main-1" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -1273,9 +1263,9 @@
                                             </div>
                                         </div>
                                     </div>      
-                                    <form action="/api/v1/posts" method="POST" id="formulario">                           
+                                    <form action="/posts" method="POST" id="formulario">                           
                                     <div class="col-lg-12 p-0 d-flex justify-content-end">
-                                      <input type="text"  class="1" name="1"  id="1" value="dasdsa" > <!-- Título oculto -->
+                                     
                                       <input type="hidden"  class="feeling" name="feeling"  id="feeling"  > <!-- Título oculto -->
                                       <input type="hidden" class="descr" name="descr" id="descr" > <!-- Descripción oculta -->
                                         <button class="btn btn-outline-primary" data-extra-toggle="toggle" data-extra-class-show=".show-note-button" data-extra-class-hide=".hide-note-button">Cerrar</button>
@@ -2211,7 +2201,7 @@ console.log(  qlEditor.querySelector('p').innerText);
 });
 
 
-document.getElementById('savePostButton').addEventListener('click', function() {
+document.getElementById('savePostButton').addEventListener('click', function(e) {
     // Obtener el contenido de Quill
     const content = document.querySelector('.quill-editor');
     
@@ -2219,16 +2209,18 @@ document.getElementById('savePostButton').addEventListener('click', function() {
     const postId = document.getElementById('postId').value;
 
     // Asignar el contenido de Quill al campo de texto oculto del formulario
-    document.getElementById('postContent').value = content;
+    //document.getElementById('postContent').value = content;
 
     var qlEditor = document.querySelector('.ql-editor');
-
+    var button = $(e.relatedTarget); // El botón que disparó el modal
+    var postContent = button.data('content');
+    $('#postContent').val(postContent); // Asigna el contenido del post
 // Seleccionamos el h1 y p dentro de ese div
 
 
 
 
-console.log(content);
+
     // Usamos Axios para enviar los datos al backend
     axios.post('/api/v1/posts/update', {
         id: postId,

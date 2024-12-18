@@ -5,7 +5,7 @@ const authController = require('../controllers/auth.controllers');
 
 Router.route('/').get(postController.getPosts)
 
-Router.route('/').post(postController.createPost);
+// Router.route('/create').post(postController.createPost);
 /*Router.route('/:id')
   .get(postController.getPost)
   .patch(authController.protect, postController.updatePost)

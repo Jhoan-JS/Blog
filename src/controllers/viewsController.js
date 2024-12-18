@@ -7,13 +7,14 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.getHome = catchAsync(async (req, res, next) => {
   console.log(user);
-  const posts = await Post.find();
   
+  const name = user.name;
+  console.log(user._id);
+  const posts = await Post.find({author:user._id});
+  console.log(posts);
+  res.status(200).render('pages/home',{name,posts});
 
-  res.status(200).render('pages/home', {
-    title: 'All Posts',
-    posts,
-  });
+ 
 });
 
 

@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+
 const postRoutes = require('./routes/post.routes');
 const categoryRoutes = require('./routes/category.routes');
 const userRoutes = require('./routes/user.routes');
@@ -24,6 +25,8 @@ app.use(morgan('dev'));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+
 
 app.use(express.json());
 

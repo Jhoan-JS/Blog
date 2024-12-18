@@ -126,13 +126,16 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
   photo: {
-    type: String,
+  type: Buffer  // Campo para almacenar la imagen
   },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
     select: false,
+  }, birthday: {
+    type: Date,
+    trim: true,
   },
 /*
   Confirmpassword: {
